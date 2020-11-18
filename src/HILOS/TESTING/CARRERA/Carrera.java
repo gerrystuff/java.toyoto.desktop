@@ -43,7 +43,7 @@ public class Carrera {
 
                  }
 
-                 System.out.println("Ya llego la perra esta.");
+                 System.out.println("Ya llego la perra esta estupida.");
 
 
 //                 for (int i = 0; i < 20; i++) {
