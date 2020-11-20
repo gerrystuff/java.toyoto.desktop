@@ -5,25 +5,55 @@ import HILOS.Semaforo;
 public class Carrera {
     static Semaforo s1,s2;
     Thread lieb,tort;
-    public boolean puenteActivo;
+    boolean estado;
+
     public Carrera(){
         s1 = new Semaforo(1);
         s2 = new Semaforo(0);
 
-        puenteActivo = false;
+        estado = false;
 
         lieb = new Thread(new Liebre());
         tort = new Thread(new Tortuga());
         }
 
+    class Puente {
+        int inicio,fin;
+        Semaforo semaforo;
+
+        Puente(int inicio,int fin){
+            semaforo = new Semaforo(1);
+            this.inicio = inicio;
+            this.fin = fin;
+        }
+
+        public int checapuente(int km,boolean tienePuente) {
+            if (km >= inicio && km <= fin && !tienePuente) {
+                semaforo.Espera();
+                return 2;
+            }
+
+            if (km > fin && tienePuente) {
+                semaforo.Libera();
+                return 1;
+            }
+
+            return 0;
+        }
+    }
+
 
          class Liebre implements Runnable {
-            int km;
+            int km = 0;
              @Override
              public void run() {
                  int sprints = 1;
 
-                 while(km <= 150){
+                 while(km<150){
+
+                     if(km>101 && !estado)
+                         estado = true;
+           /**
                      if(km>=50 && km <=100){ //puente entre km 50 y 100 y esta desocupado
                          if(!puenteActivo)
                          puenteActivo = true; //el puente se ocupa
@@ -36,11 +66,9 @@ public class Carrera {
                          puenteActivo = false;
                          s1.Libera();
                      }
-
-                     km += 2;
+*/                   km ++;
                      System.out.println("Liebree en km #"+km + "\tSprint: "+sprints);
                      sprints++;
-
                  }
 
                  System.out.println("Ya llego la perra esta estupida.");
@@ -54,18 +82,18 @@ public class Carrera {
              }
          }
 
+
          class Tortuga implements Runnable{
-            int km ;
+            int km = 0 ;
             @Override
             public void run() {
 
                 int sprints = 1;
 
-                while(km<=100){
+                while(km<100){
                     km++;
                     System.out.println("Tortuga en km #"+km + "\tSprint: "+sprints);
                     sprints++;
-
                 }
 
                 System.out.println("Ya llego el pinche lento");
