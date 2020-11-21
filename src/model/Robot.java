@@ -1,5 +1,6 @@
 package model;
 
+
 public class Robot {
     private Station estacion;
 
@@ -8,7 +9,7 @@ public class Robot {
     }
 
     public String toString(){
-        return "model.Robot trabajando en la estacion : " + estacion.getName();
+        return "Robot trabajando en la estacion : " + estacion.getName();
     }
 
 }
