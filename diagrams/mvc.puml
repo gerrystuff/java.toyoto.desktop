@@ -1,0 +1,44 @@
+@startuml
+class AssemblerView {
+    - AssemblerModel model
+    - AssemblerHandler controller
+
+    - doInterface () : void
+}
+
+class AssemblerController {
+    - AssemblerModel model
+    - AssemblerView view
+
+    + AssemblerController(AW,AM)
+}
+
+class AssemblerModel {
+        - lines [] : Line
+        - stations [] : Station
+
+        + start () : void
+
+}
+
+AssemblerView "1" -> AssemblerController : asks
+AssemblerController"2" ->  AssemblerModel : request
+
+AssemblerModel "3" .> AssemblerController : response
+AssemblerController "4" .> AssemblerView : update
+
+@enduml
+
+
+@startuml
+class Student {
+  Name
+}
+Student "0..*" -- "1..*" Course
+(Student, Course) . Enrollment
+
+class Enrollment {
+  drop()
+  cancel()
+}
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+
+'AssemblerModel -> Line : start ()
+'Line --> AssemblerModel : station_spot
+'
+'AssemblerModel -> Station : to work (Line)
+'Station -> Line : works on
+
+AssemblerModel -> Station : works on (Lines [])
+Station -> Line :
+
+
+'Alice -> Bob: Authentication Request
+'Bob --> Alice: Authentication Response
+'
+'Alice -> Bob: Another authentication Request
+'Alice <-- Bob: another authentication Response
+@enduml

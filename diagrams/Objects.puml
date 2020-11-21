@@ -1,0 +1,37 @@
+
+@startuml
+abstract class StationController{
+     # name : String
+     # position : int
+     # qtyServices : int
+     # time1 : int
+     # time2 : int
+     # robots[] : Robot
+
+     # StationController (position : int)
+     - setData () : void
+     + getName () : String
+    }
+
+class Station extends StationController implements Runnable{
+    + Station (pos : int)
+}
+
+class AssemblerModel {
+    - lines [] : Line
+    - stations [] : Station
+
+    + start () : void
+
+
+}
+
+class Line {
+    - station [] : boolean
+    + spot : int
+
+    + go () : void
+    + stop () : void
+}
+
+@enduml
