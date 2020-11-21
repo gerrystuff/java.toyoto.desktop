@@ -10,6 +10,9 @@ public class AssemblerController {
     public AssemblerController(AssemblerView view, AssemblerModel model){
         this.model = model;
         this.view = view;
+
+        this.view.setData(this.model.getLines());
+
     }
 
 }
