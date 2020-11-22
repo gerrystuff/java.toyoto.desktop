@@ -1,0 +1,16 @@
+@startuml
+
+(*) --> "espera ()"
+if "recursos<1" then
+--> [ true ] "wait ()"
+else
+--> [ false ] "recursos --"
+--> (*)
+(*) --> "libera ()"
+--> "recursos ++"
+--> "notifyAll()"
+--> (*)
+"wait ()" -->[ notifyAll()                ] "espera ()"
+
+
+@enduml

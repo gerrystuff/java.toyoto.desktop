@@ -13,6 +13,8 @@ public class Line  {
         Arrays.fill(station,false);
         spot = 0;
 
+        status = new Status[6];
+
         for( int i = 0; i<status.length; i++)
         status[i] = new Status();
     }
@@ -20,13 +22,6 @@ public class Line  {
     public Status getStatus(int i){
         return status[i];
     }
-    public void go(){
-       station[spot] = true;
-    }
 
-    public void stop(){
-        station[spot] = false;
-        spot++;
-    }
 
 }

@@ -6,10 +6,8 @@
 'AssemblerModel -> Station : to work (Line)
 'Station -> Line : works on
 
-AssemblerModel -> Station : works on (Lines [])
-Station -> Line :
 
-
+AssemblerView -> AssemblerController : creates
 'Alice -> Bob: Authentication Request
 'Bob --> Alice: Authentication Response
 '

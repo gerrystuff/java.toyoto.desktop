@@ -3,7 +3,7 @@ package model;
 import java.awt.*;
 
 public class Status extends Canvas {
-    String url = "spot.png";
+    private String url = "spot.png";
 
     public Status(String url){
         this.url = url;

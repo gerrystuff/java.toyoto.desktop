@@ -7,7 +7,7 @@ import java.awt.*;
 
 public abstract class StationController extends Canvas {
     protected String name;
-    private String image = "";
+    protected String image = "";
     protected int position;
     protected int qtyServices;
     protected int time1, time2;
@@ -18,10 +18,6 @@ public abstract class StationController extends Canvas {
         setData();
     }
 
-    public void paint(Graphics g){
-        g.drawImage(Rutinas.AjustarImagen(image,getWidth(),getHeight()).getImage(),0,0,null);
-
-    }
     private void setData(){
         switch (position){
             case 1: name = "Chasis";
@@ -32,12 +28,12 @@ public abstract class StationController extends Canvas {
             case 2: name = "Motor-Transmision";
                 time1 = 6;
                 time2 = 4;
-                robots = new Robot[4];
+                robots = new Robot[6];
                 image = "engine.png";
                 break;
             case 3: name = "Carroceria";
                 time1 = 10;
-                robots = new Robot[4];
+                robots = new Robot[3];
                 image = "bodywork.png";
                 break;
             case 4: name = "Interiores";

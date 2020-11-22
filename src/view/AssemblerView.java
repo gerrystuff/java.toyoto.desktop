@@ -17,7 +17,6 @@ public class AssemblerView extends JFrame {
 
     private Line lines[];
     private Station stations[];
-
     public AssemblerView(){
         setTitle("Ensambladora de automoviles TOYOTO");
         doInterface();
@@ -30,13 +29,19 @@ public class AssemblerView extends JFrame {
         model = new AssemblerModel();
         controller = new AssemblerController(this,model);
 
-        this.setLayout(new GridLayout(2,6));
-        System.out.println(lines.length);
-        stations[0]  = new Station(1);
-        stations[1]  = new Station(2);
+        this.setLayout(new GridLayout(0,6));
 
-        add(stations[0]);
-        add(stations[1]);
+        for(int i = 0; i < 6 ; i++) {
+            stations[i] = new Station(i + 1);
+            add(stations[i]);
+        }
+
+
+        for(int i = 0; i < lines.length; i++){
+            lines[i] = new Line();
+            for(int k = 0; k < 6 ; k++)
+            add(lines[i].getStatus(k));
+        }
 
         setVisible(true);
     }

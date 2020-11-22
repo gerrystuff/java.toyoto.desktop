@@ -1,7 +1,8 @@
 
 @startuml
-abstract class StationController{
+abstract class StationController extends Canvas {
      # name : String
+     # image : String
      # position : int
      # qtyServices : int
      # time1 : int
@@ -14,15 +15,21 @@ abstract class StationController{
     }
 
 class Station extends StationController implements Runnable{
-    + Station (pos : int)
+
+      - plusy : int
+      - plusx : int
+
+      + Station (pos : int)
+      + paint () : void
+      + run () : void
 }
 
-class AssemblerModel {
-    - lines [] : Line
-    - stations [] : Station
+class Semaforo{
+      - recursos : int
 
-    + start () : void
-
+      + Semaforo(recursos : int)
+      + espera () : synchronized void
+      + libera () : synchronized void
 
 }
 
@@ -30,13 +37,10 @@ class Line {
     - station [] : boolean
     + spot : int
 
-    + go () : void
-    + stop () : void
+    + getStatus (i : int) : Status
+
 }
 
-@enduml
-
-@startuml
 class AssemblerView {
     - AssemblerModel model
     - AssemblerHandler controller
@@ -52,12 +56,20 @@ class AssemblerController {
 }
 
 class AssemblerModel {
-        - lines [] : Line
         - stations [] : Station
 
+        + getLines () : int
         + start () : void
 
 }
+
+class Status extends Canvas {
+    - url : String
+
+    + Status (url : String)
+    + paint (g : Graphics) : void
+}
+
 
 AssemblerView "1" -> AssemblerController : asks
 AssemblerController"2" ->  AssemblerModel : request
