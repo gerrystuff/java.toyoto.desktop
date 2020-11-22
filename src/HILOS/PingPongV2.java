@@ -1,5 +1,7 @@
 package HILOS;
 
+import model.Semaforo;
+
 class Ping implements Runnable {
 	private Semaforo s1,s2;
 	public Ping(Semaforo s1, Semaforo s2) {

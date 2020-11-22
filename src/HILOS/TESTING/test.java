@@ -13,9 +13,5 @@ public class test {
 
         Thread matriz [][]= new Thread[2][3];
 
-        for(int i = 0; i < 2; i++){
-            for(int k = 0; k < 3; ++)
-                matriz[i][k] =
-        }
     }
 }

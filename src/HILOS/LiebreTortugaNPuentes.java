@@ -1,5 +1,7 @@
 package HILOS;
 
+import model.Semaforo;
+
 import java.util.Random;
 /* PUENTES:
  * KMINICIO   KMTERMINO

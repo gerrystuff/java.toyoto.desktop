@@ -1,5 +1,7 @@
 package HILOS;
 
+import model.Semaforo;
+
 import java.util.Random;
 
 class Liebre1 extends Thread {

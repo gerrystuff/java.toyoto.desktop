@@ -1,10 +1,11 @@
 package HILOS;
-import java.util.Arrays;
+import model.Semaforo;
+
 import java.util.Random;
 class HiloRenColAleatorio extends Thread {
 	int [][] m;
 	Random r=new Random();
-	static Semaforo [][] s;
+	static Semaforo[][] s;
 	static boolean [][] band=null;
 	static Semaforo sinc;
 	static int cont=0;

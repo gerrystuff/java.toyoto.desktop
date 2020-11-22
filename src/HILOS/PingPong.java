@@ -1,5 +1,7 @@
 package HILOS;
 
+import model.Semaforo;
+
 public class PingPong {
 	static Semaforo s1=new Semaforo(1);
 	static Semaforo s2=new Semaforo(0);

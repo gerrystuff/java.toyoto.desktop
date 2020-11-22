@@ -1,7 +1,7 @@
 @startuml
 
 (*) --> "espera ()"
-if "recursos<1" then
+if " while recursos<1" then
 --> [ true ] "wait ()"
 else
 --> [ false ] "recursos --"

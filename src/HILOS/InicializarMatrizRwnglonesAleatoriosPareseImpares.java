@@ -1,5 +1,7 @@
 package HILOS;
 
+import model.Semaforo;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -7,7 +9,7 @@ public class InicializarMatrizRwnglonesAleatoriosPareseImpares {
 	static class HiloParAleatorio extends Thread {
 		int [][] m;
 		Random r=new Random();
-		Semaforo [] s;
+		Semaforo[] s;
 		static boolean [] band=null;
 
 		public HiloParAleatorio(int [][] m,Semaforo [] s) {

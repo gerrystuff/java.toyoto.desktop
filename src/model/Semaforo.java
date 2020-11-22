@@ -1,4 +1,4 @@
-package HILOS;
+package model;
 
 public class Semaforo {
 	private int Recursos;

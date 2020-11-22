@@ -1,5 +1,7 @@
 package HILOS;
 
+import model.Semaforo;
+
 import java.math.BigInteger;
 class SumaSemV2 extends Thread {
 	static Semaforo S=null;
@@ -38,7 +40,7 @@ public class IncrementeASemaforoV2 {
 		
 		while(H1.isAlive() || H2.isAlive() || H3.isAlive());
 		
-		System.out.println("A después de tres sumas de 1 = "+H1);
+		System.out.println("A despuï¿½s de tres sumas de 1 = "+H1);
 		
 		SumaSemV2 [] v=new SumaSemV2[100];
 		for(int i=0 ; i<v.length ; i++) {

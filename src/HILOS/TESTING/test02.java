@@ -1,6 +1,6 @@
 package HILOS.TESTING;
 
-import HILOS.Semaforo;
+import model.Semaforo;
 
 public class test02 {
     static Semaforo s1,s2;
