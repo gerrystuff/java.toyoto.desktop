@@ -1,4 +1,4 @@
-package model;
+package MASTER.model;
 
 import javax.swing.*;
 import java.awt.*;

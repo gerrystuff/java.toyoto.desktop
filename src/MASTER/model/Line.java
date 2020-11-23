@@ -1,6 +1,5 @@
-package model;
+package MASTER.model;
 
-import java.awt.*;
 import java.util.Arrays;
 
 public class Line  {

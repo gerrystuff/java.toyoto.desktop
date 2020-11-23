@@ -1,7 +1,5 @@
 package HILOS;
 
-import model.Semaforo;
-
 import java.math.BigInteger;
 class SumaSemV2 extends Thread {
 	static Semaforo S=null;

@@ -1,7 +1,7 @@
-package controller;
+package MASTER.controller;
 
-import model.AssemblerModel;
-import view.AssemblerView;
+import MASTER.model.AssemblerModel;
+import MASTER.view.AssemblerView;
 
 public class AssemblerController {
     AssemblerModel model;

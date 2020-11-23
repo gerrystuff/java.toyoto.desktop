@@ -1,10 +1,9 @@
-package view;
+package MASTER.view;
 
-import controller.AssemblerController;
-import model.AssemblerModel;
-import model.Line;
-import model.Station;
-import model.Status;
+import MASTER.controller.AssemblerController;
+import MASTER.model.AssemblerModel;
+import MASTER.model.Line;
+import MASTER.model.Station;
 
 import javax.swing.*;
 import java.awt.*;

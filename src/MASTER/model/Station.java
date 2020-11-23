@@ -1,6 +1,6 @@
-package model;
+package MASTER.model;
 
-import controller.StationController;
+import MASTER.controller.StationController;
 
 import java.awt.*;
 

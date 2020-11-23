@@ -1,7 +1,6 @@
-package controller;
+package MASTER.controller;
 
-import model.Robot;
-import model.Rutinas;
+import MASTER.model.Robot;
 
 import java.awt.*;
 

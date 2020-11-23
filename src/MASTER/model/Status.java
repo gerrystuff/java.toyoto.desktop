@@ -1,4 +1,4 @@
-package model;
+package MASTER.model;
 
 import java.awt.*;
 

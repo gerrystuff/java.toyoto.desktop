@@ -1,4 +1,4 @@
-package model;
+package MASTER.model;
 
 
 public class Robot {

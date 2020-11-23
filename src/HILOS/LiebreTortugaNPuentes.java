@@ -1,7 +1,5 @@
 package HILOS;
 
-import model.Semaforo;
-
 import java.util.Random;
 /* PUENTES:
  * KMINICIO   KMTERMINO
@@ -16,7 +14,7 @@ class Puente {
 /////////////////	private boolean tienePuente;
 	private Semaforo s;
 	private int kmInicia, kmTermina;
-	
+
 	public Puente(int kmInicia,int kmTermina) {
 		s=new Semaforo(1);
 		this.kmInicia=kmInicia;
@@ -28,7 +26,7 @@ class Puente {
 			s.Espera();
 /////////			tienePuente=true;
 			return 2; // tiene el punte
-			
+
 		}
 		if(kmActual>kmTermina && tienePuente) {
 /////////			tienePuente=false;
@@ -37,9 +35,9 @@ class Puente {
 		}
 	    return 0;
 	}
-	
-	
-	
+
+
+
 }
 class Liebre2 extends Thread {
 	private int kmAvanzados;
@@ -75,7 +73,7 @@ class Liebre2 extends Thread {
 
 		System.out.println("La liebre ha GANADO LA CARRERA ");
 	}
-	
+
 }
 class Tortuga2 extends Thread {
 	private int kmAvanzados;
@@ -107,36 +105,36 @@ class Tortuga2 extends Thread {
 		}
 		System.out.println("LA TORTUGA HA GANADO LA CARRERA");
 	}
-	
+
 }
 public class LiebreTortugaNPuentes {
 	public static void main(String [] a) {
-		
+
 		Puente [] vpuentes=new Puente[5];
 		vpuentes[0]=new Puente(30,80);
 		vpuentes[1]=new Puente(100,200);
 		vpuentes[2]=new Puente(300,350);
 		vpuentes[3]=new Puente(500,700);
 		vpuentes[4]=new Puente(810,920);
-	
+
 		Liebre2 lie=new Liebre2(vpuentes);
 		Tortuga2 tor=new Tortuga2(vpuentes);
 		Liebre2 lie2=new Liebre2(vpuentes);
-		Tortuga2 tor2=new Tortuga2(vpuentes);	
+		Tortuga2 tor2=new Tortuga2(vpuentes);
 		tor2.setName("Tortuga CLONADA");
 		lie2.setName("LIEBRE CLONADA");
 		tor.setName("Tortuga original");
 		lie.setName("Liebre ORIGINAL");
 		lie.start();
-		
-		
+
+
 		tor.start();
-		
+
 
 		lie2.start();
-		
-		
-		tor2.start();		
+
+
+		tor2.start();
 		;
 
 	}

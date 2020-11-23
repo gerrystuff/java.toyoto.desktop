@@ -1,5 +1,4 @@
 package HILOS;
-import model.Semaforo;
 
 import java.math.BigInteger;
 
