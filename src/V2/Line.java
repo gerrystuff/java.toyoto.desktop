@@ -11,21 +11,14 @@ public class Line extends Thread {
     }
 
     public void run() {
-
-        while (true) {
-
             station1.waitingRobot(getName());
 
             try {
-                //   activo();
                 System.out.println(getName() + ": Robot trabajando.." + "\t Robots Osiciosos : " + station1.Robots);
                 sleep(2500);
 
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            } catch (InterruptedException e) {  e.printStackTrace(); }
             station1.freeRobot(getName());
         }
-    }
 }
 

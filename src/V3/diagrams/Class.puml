@@ -1,0 +1,54 @@
+@startuml
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+
+Alice -> Bob: Another authentication Request
+Alice <-- Bob: another authentication Response
+@enduml
+
+@startuml
+abstract class StationController extends Canvas {
+     # name : String
+     # image : String
+     # position : int
+     # qtyServices : int
+     # robots[] : Robot
+
+     # StationController (position : int)
+     - setData () : void
+     + getName () : String
+    }
+
+    class Station extends StationController implements Runnable{
+
+          - plusy : int
+          - plusx : int
+
+          + Station (pos : int)
+          + paint () : void
+          + run () : void
+    }
+
+    class AssemblerView {
+        - model : AssemblerModel
+        - controller : AssemblerController
+        + stations [][] : Station
+
+        - doInterface () : void
+        + setData(linequant : int) : void
+    }
+    class AssemblerController {
+        - model : AssemblerModel
+        - view : AssemblerView
+
+        + AssemblerController(AW,AM)
+    }
+class AssemblerModel {
+        - stations [] : Station
+
+        + getLines () : int
+        + start () : void
+
+}
+
+@enduml
