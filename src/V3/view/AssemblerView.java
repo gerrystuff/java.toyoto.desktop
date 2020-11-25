@@ -22,19 +22,19 @@ public class AssemblerView extends JFrame {
         doInterface();
     }
     private void doInterface(){
-        setSize(1000,1000);
+        setSize(1200,1000);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         centro = new JPanel();
-        centro.setLayout(new GridLayout(0,3));
+        centro.setLayout(new GridLayout(0,6));
 
         model = new AssemblerModel();
         controller = new AssemblerController(this,model);
+
         JButton btn = new JButton("GO");
-        btn.addActionListener(e -> {
-            go();
-        });
+        btn.addActionListener(e -> go());
+
         add(btn,BorderLayout.NORTH);
 
         for(int i = 0; i < stations.length; i++) {
@@ -59,13 +59,13 @@ public class AssemblerView extends JFrame {
     }
 
     public void setData(int linequant){
-        stations = new Station[2][3];
+        System.out.println(linequant);
+        stations = new Station[7][6];
         for(int i = 0; i < stations.length; i++) {
             for (int k = 0; k < stations[0].length; k++)
               stations[i][k] = new Station(k+1);
         }
 
-        System.out.println(stations[0].length * stations.length);
     }
 
     public static void main(String[] args) {
