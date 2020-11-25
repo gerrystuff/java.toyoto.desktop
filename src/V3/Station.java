@@ -2,9 +2,9 @@ package V3;
 
 
 
-import HILOS.Semaforo;
 import MASTER.model.Rutinas;
 import V3.controller.StationController;
+import V3.model.Semaforo;
 
 import java.awt.*;
 
@@ -13,59 +13,78 @@ public class Station extends StationController implements Runnable {
     private int plusy;
     private int plusx;
     static Semaforo s1,s2;
-boolean working = false;
-
+    boolean working = false;
+    Graphics g;
+    Image buffer = null;
     public Station(int pos){
         super(pos);
     if(s1 == null) {
 
-        s1 = new Semaforo(5);
-        s2 = new Semaforo(4);
+        s1 = new Semaforo(1);
+        s2 = new Semaforo(1);
 
     }
         plusy = 0;
         plusx = 0;
     }
 
-    public void paint(Graphics g){
+    public void paint(Graphics g) {
+        if (buffer == null) {
+            buffer = createImage(getWidth(), getHeight());
+            this.g = buffer.getGraphics();
+            repaint();
+            return;
+        }
 
-            g.drawImage(Rutinas.AjustarImagen(image,getWidth(),getHeight()).getImage(),0,0,null);
-            if(working){
-                g.drawImage(Rutinas.AjustarImagen("robot.png", 20, 20).getImage(), 135- plusx, 15+ plusy, null);
-            }
-            //
-//        for(int i = 1; i <= robots.length; i++) {
-//            g.drawImage(Rutinas.AjustarImagen("robot.png", 20, 20).getImage(), 135- plusx, 15+ plusy, null);
-//
-//            if(i == 2 || i == 4) {
-//                plusy = 0;
-//                plusx += 20;
-//            }
-//            else
-//                plusy += 20;
-//        }
-//
-//        plusy = 0;
-//        plusx = 0;
+
+        Dibuja();
+        g.drawImage(buffer, 0, 0, getWidth(), getHeight(), this);
+
+
     }
 
+    @Override
+    public void update(Graphics g) {
+        paint(g);
+    }
+
+    public void Dibuja(){
+        g.drawImage(Rutinas.AjustarImagen(image,getWidth(),getHeight()).getImage(),0,0,null);
+        if(working){
+            g.drawImage(Rutinas.AjustarImagen("robot.png", 20, 20).getImage(), 135- plusx, 15+ plusy, null);
+        }
+    }
 
     @Override
     public void run() {
-        System.out.println("ENTRA CARRO ");
+        System.out.println("Arancha estacion. ");
 
         s1.Espera();
+
         try {
             System.out.println(this.getName()+": Linea  esta instalando chasis ");
             working = true;
             repaint();
-            Thread.sleep(2200);
+            Thread.sleep(3200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         working = false;
         repaint();
         s1.Libera();
+
+        s2.Espera();
+        try {
+            System.out.println(this.getName()+": Linea  esta instalando motor");
+            working = true;
+            repaint();
+            Thread.sleep(3200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        working = false;
+        repaint();
+        s2.Libera();
 
 
     }
