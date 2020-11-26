@@ -14,7 +14,7 @@ public class AssemblerView extends JFrame {
 
    private AssemblerModel model;
    private AssemblerController controller;
-   public Station stations[][];
+   static Station stations[][];
    private JPanel centro;
 
     public AssemblerView(){
@@ -60,7 +60,7 @@ public class AssemblerView extends JFrame {
 
     public void setData(int linequant){
         System.out.println(linequant);
-        stations = new Station[7][6];
+        stations = new Station[8][6];
         for(int i = 0; i < stations.length; i++) {
             for (int k = 0; k < stations[0].length; k++)
               stations[i][k] = new Station(k+1);
@@ -72,5 +72,9 @@ public class AssemblerView extends JFrame {
         new AssemblerView();
 
 
+    }
+
+    public static Station[][] getStation(){
+        return stations;
     }
 }

@@ -5,13 +5,15 @@ package V3;
 import MASTER.model.Rutinas;
 import V3.controller.StationController;
 import V3.model.Semaforo;
+import V3.view.AssemblerView;
 
 import java.awt.*;
 
 public class Station extends StationController implements Runnable {
 
-    static Semaforo s1,s2,s3,s4,s5,s6;
-    static Semaforo trigger2,trigger3,trigger4,trigger5,trigger6;
+    public static Semaforo s1,s2,s3,s4,s5,s6;
+    static Station matriz[][];
+
     boolean working = false;
     Graphics g;
     Image buffer = null;
@@ -21,19 +23,13 @@ public class Station extends StationController implements Runnable {
         super(pos);
         if (s1 == null) {
 
+
             s1 = new Semaforo(5);
             s2 = new Semaforo(6);
             s3 = new Semaforo(3);
             s4 = new Semaforo(3);
             s5 = new Semaforo(2);
             s6 = new Semaforo(5);
-
-            trigger2 = new Semaforo(0);
-            trigger3 = new Semaforo(0);
-            trigger4 = new Semaforo(0);
-            trigger5 = new Semaforo(0);
-            trigger6 = new Semaforo(0);
-
         }
 
     }
@@ -67,11 +63,16 @@ public class Station extends StationController implements Runnable {
 
     @Override
     public void run() {
+        System.out.println(getName() + "Inicia linea de produccion");
 
+        switch (position){
+            case 1: AssemblerView.getStation()[5][4].s1.Libera();
+            s1.Espera();
+
+        }
 
         switch (position) {
          case 1:
-             s1.Espera();
             try {
                 System.out.println("Trabajando en el chasis");
                 working = true;
@@ -79,15 +80,11 @@ public class Station extends StationController implements Runnable {
                 Thread.sleep(3200);
             } catch (InterruptedException e) { e.printStackTrace(); }
 
-             working = false;
-             repaint();
-            trigger2.Libera();
+                 working = false;
+                 repaint();
             break;
 
             case 2:
-                trigger2.Espera();
-            s2.Espera();
-            s1.Libera();
                 try {
                     System.out.println("Trabajando en el motor");
                     working = true;
@@ -97,13 +94,9 @@ public class Station extends StationController implements Runnable {
 
                 working = false;
                 repaint();
-                trigger3.Libera();
                 break;
 
             case 3:
-                trigger3.Espera();
-                s3.Espera();
-                s2.Libera();
                 try {
                     System.out.println("Trabajando en el carroceria");
                     working = true;
@@ -113,12 +106,8 @@ public class Station extends StationController implements Runnable {
 
                 working = false;
                 repaint();
-                trigger4.Libera();
                 break;
             case 4:
-                trigger4.Espera();
-                s4.Espera();
-                s3.Libera();
                 try {
                     System.out.println("Trabajando en las llantas");
                     working = true;
@@ -128,10 +117,8 @@ public class Station extends StationController implements Runnable {
 
                 working = false;
                 repaint();
-                trigger5.Libera();
                 break;
             case 5:
-                trigger5.Espera();
                 s5.Espera();
                 s4.Libera();
                 try {
@@ -143,12 +130,8 @@ public class Station extends StationController implements Runnable {
 
                 working = false;
                 repaint();
-                trigger6.Libera();
                 break;
             case 6:
-                trigger6.Espera();
-                s6.Espera();
-                s5.Libera();
                 try {
                     System.out.println("Trabajando en las pruebas ");
                     working = true;
@@ -164,6 +147,7 @@ public class Station extends StationController implements Runnable {
         }
     repaint();
     }
+
 
 
     }

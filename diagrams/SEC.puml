@@ -1,0 +1,17 @@
+@startuml
+
+Sistema -> ACM : validarServicios(Alumno)
+ACM -> Sistema : serviciosDisponibles()
+Sistema --> Alumno: menuServicios()
+Alumno -> Sistema: seleccionarServicio(servicio)
+Sistema -> Sistema : actualizarEstadisiticas()
+Sistema --> Alumno : muestraServicio()
+@enduml
+
+@startuml
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+
+Alice -> Bob: Another authentication Request
+Alice <-- Bob: another authentication Response
+@enduml

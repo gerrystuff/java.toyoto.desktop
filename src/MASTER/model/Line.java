@@ -23,4 +23,12 @@ public class Line  {
     }
 
 
+    /*
+
+    @startuml
+    class Line{
+    }
+    @enduml
+
+     */
 }
