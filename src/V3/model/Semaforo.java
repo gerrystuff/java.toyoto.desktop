@@ -6,10 +6,12 @@ public class Semaforo {
 	public Semaforo(int Recursos){
 		this.Recursos=Recursos;
 	}
+
 	
 	public synchronized void Espera(){
 		while (Recursos<1) {
 			try {
+
 				wait();
 			} catch (InterruptedException e) {
 			}
@@ -17,9 +19,22 @@ public class Semaforo {
 		Recursos--;
 	
 	}
+
+
+	public synchronized void Esperax(String name){
+		while (Recursos<1) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+			}
+		}
+		Recursos--;
+
+	}
 	
 	public synchronized void Libera(){
 		Recursos++;
 		notifyAll();
 	}
+
 }

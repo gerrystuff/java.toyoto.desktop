@@ -5,22 +5,23 @@ package V3;
 import MASTER.model.Rutinas;
 import V3.controller.StationController;
 import V3.model.Semaforo;
-import V3.view.AssemblerView;
 
 import java.awt.*;
 
 public class Station extends StationController implements Runnable {
 
-    public static Semaforo s1,s2,s3,s4,s5,s6;
+    public static Semaforo s1, s2, s3, s4, s5, s6, trigger;
+    public Semaforo work;
     static Station matriz[][];
+    int vehiculos;
 
     boolean working = false;
     Graphics g;
     Image buffer = null;
 
 
-    public Station(int pos) {
-        super(pos);
+    public Station(int pos, int line) {
+        super(pos, line);
         if (s1 == null) {
 
 
@@ -30,7 +31,14 @@ public class Station extends StationController implements Runnable {
             s4 = new Semaforo(3);
             s5 = new Semaforo(2);
             s6 = new Semaforo(5);
+
+            vehiculos = 0;
         }
+
+        if (position == 0)
+            work = new Semaforo(1);
+        else
+            work = new Semaforo(0);
 
     }
 
@@ -54,9 +62,9 @@ public class Station extends StationController implements Runnable {
         paint(g);
     }
 
-    public void Dibuja(){
-        g.drawImage(Rutinas.AjustarImagen(image,getWidth(),getHeight()).getImage(),0,0,null);
-        if(working){
+    public void Dibuja() {
+        g.drawImage(Rutinas.AjustarImagen(image, getWidth(), getHeight()).getImage(), 0, 0, null);
+        if (working) {
             g.drawImage(Rutinas.AjustarImagen("robot.png", 40, 40).getImage(), 100, 45, null);
         }
     }
@@ -65,24 +73,22 @@ public class Station extends StationController implements Runnable {
     public void run() {
         System.out.println(getName() + "Inicia linea de produccion");
 
-        switch (position){
-            case 1: AssemblerView.getStation()[5][4].s1.Libera();
-            s1.Espera();
 
-        }
 
         switch (position) {
-         case 1:
-            try {
-                System.out.println("Trabajando en el chasis");
-                working = true;
-                repaint();
-                Thread.sleep(3200);
-            } catch (InterruptedException e) { e.printStackTrace(); }
+            case 1:
+                try {
+                    System.out.println("Trabajando en el chasis");
+                    working = true;
+                    repaint();
+                    Thread.sleep(3200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-                 working = false;
-                 repaint();
-            break;
+                working = false;
+                repaint();
+                break;
 
             case 2:
                 try {
@@ -90,7 +96,9 @@ public class Station extends StationController implements Runnable {
                     working = true;
                     repaint();
                     Thread.sleep(3200);
-                } catch (InterruptedException e) { e.printStackTrace(); }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 working = false;
                 repaint();
@@ -102,7 +110,9 @@ public class Station extends StationController implements Runnable {
                     working = true;
                     repaint();
                     Thread.sleep(3200);
-                } catch (InterruptedException e) { e.printStackTrace(); }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 working = false;
                 repaint();
@@ -113,7 +123,9 @@ public class Station extends StationController implements Runnable {
                     working = true;
                     repaint();
                     Thread.sleep(3200);
-                } catch (InterruptedException e) { e.printStackTrace(); }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 working = false;
                 repaint();
@@ -126,7 +138,9 @@ public class Station extends StationController implements Runnable {
                     working = true;
                     repaint();
                     Thread.sleep(3200);
-                } catch (InterruptedException e) { e.printStackTrace(); }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 working = false;
                 repaint();
@@ -137,7 +151,9 @@ public class Station extends StationController implements Runnable {
                     working = true;
                     repaint();
                     Thread.sleep(3200);
-                } catch (InterruptedException e) { e.printStackTrace(); }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 System.out.println("ia mevoi..");
                 working = false;
@@ -145,12 +161,10 @@ public class Station extends StationController implements Runnable {
                 break;
 
         }
-    repaint();
+        repaint();
     }
+}
 
-
-
-    }
 
 
 
