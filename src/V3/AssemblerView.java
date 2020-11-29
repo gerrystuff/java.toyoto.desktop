@@ -27,7 +27,7 @@ public class AssemblerView extends JFrame {
     }
 
     private void doInterface() {
-        setSize(1200, 500);
+        setSize(1200, 1000);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -67,7 +67,7 @@ public class AssemblerView extends JFrame {
     }
 
     public void setData(int linequant) {
-        stations = new Stat[5][6];
+        stations = new Stat[10][6];
         for (int i = 0; i < stations.length; i++) {
             for (int k = 0; k < stations[0].length; k++)
                 stations[i][k] = new Stat(k, i);
@@ -126,6 +126,8 @@ public class AssemblerView extends JFrame {
 
         }
 
+        String veh = "";
+
         @Override
         public void update(Graphics g) {
             paint(g);
@@ -135,11 +137,14 @@ public class AssemblerView extends JFrame {
         public void Dibuja() {
             g.drawImage(Rutinas.AjustarImagen("encendida.png", getWidth(), getHeight()).getImage(), 0, 0, null);
 
+            g.drawString(veh,50,10);
+
             if(robot)
             g.drawImage(Rutinas.AjustarImagen("robot.png", 40, 40).getImage(), 100, 35, null);
 
             if(robot2)
             g.drawImage(Rutinas.AjustarImagen("robot2.png", 40, 40).getImage(), 100, 35, null);
+
 
         }
 
@@ -147,15 +152,19 @@ public class AssemblerView extends JFrame {
         public void run() {
 
             while (true) {
-
                 switch (position) {
                     case 0:
 
                         canWork.Espera(); //Semaforo personal que indica si la estacion puede trabajar. chasis empieza en verde.
+
+                        robot = false;
+                        repaint();
+
                         s1.Espera();
                         newCar.Espera(); //Semaforo global que indica si se puede ensamblar un carro nuevo
 
                         if (vehiculos == 20) {
+                            System.out.println("ENTRE A ESTA MIERDA");
                             apagada = true;
                             repaint();
                             canWork.Libera();
@@ -165,15 +174,11 @@ public class AssemblerView extends JFrame {
                             new Thread(stations[line][0]).stop();
                         }
 
-
-                      //  flag.Espera();
-                       // System.out.println(getName() + "entre");
                         vehiculos++;
                         label.setText(String.valueOf(vehiculos));
                         System.out.println(getName() + " fabricando vehiculo #" + vehiculos);
-                    //    flag.Libera();
-
-
+                        veh = String.valueOf(vehiculos);
+                        repaint();
                         newCar.Libera();
 
                         try {
@@ -185,31 +190,17 @@ public class AssemblerView extends JFrame {
                             e.printStackTrace();
                         }
 
-                        robot = false;
-                        repaint();
-
-
-                      /*  if (!stations[line][position + 1].estaVivo()) {
-                            System.out.println("Lo arranco..");
-                            (stations[line][position + 1]).run();//arranca siguiente linea
-
-                        }
-*/
-  //                      System.out.println("Prosigo..");
                         stations[line][position + 1].canWork.Libera(); // la siguinte linea libera robot
-
-                        s1.Libera();
 
                         break;
 
 
                     case 1:
 
-                        System.out.println("INICIA ESTACION 2 ");
                         canWork.Espera();
-                        System.out.println("Entre");
+
                         if (apagada && !stations[line][position - 1].estaVivo()) { //checamos si aun se pueden hacer carros.
-                            System.out.println("PeEPE");
+
                             stations[line][position + 1].apagada = true;
                             repaint();
                             stations[line][position + 1].canWork.Libera();
@@ -218,20 +209,21 @@ public class AssemblerView extends JFrame {
 
                         }
 
+
                         s2.Espera();
 
-                        stations[line][position - 1].canWork.Libera(); //puede entrar otro vehiculo ala estacion anterior
+                        stations[line][position-1].canWork.Libera();
+
+                        s1.Libera();
+
                         try {
-                            System.out.println("xxxxxxx");
                             robot = true;
                             repaint();
-                            System.out.println(getName() +" esta instalando el motor" + waiting);
+                            System.out.println(getName() +" esta instalando el motor");
                             Thread.sleep(waiting);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        robot = false;
-                        repaint();
 
                         s2t.Espera(); //incia la instalacion de la transmision
 
@@ -241,16 +233,13 @@ public class AssemblerView extends JFrame {
                             System.out.println(getName()+" esta instalando la transmision");
                             robot2 = true;
                             repaint();
-
                             Thread.sleep(waiting);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+
                         robot2 = false;
                         repaint();
-
-                      //  if (!stations[line][position + 1].estaVivo())
-                        //   new Thread(stations[line][position + 1]).start(); //arranca siguiente linea
 
                         stations[line][position + 1].canWork.Libera(); // la siguinte linea libera robot
 
@@ -269,13 +258,9 @@ public class AssemblerView extends JFrame {
 
                         }
 
-                        apagada = true;
                         s3.Espera();
-                        apagada = false;
-                        stations[line][position-1].canWork.Libera(); //puede entrar otro vehiculo ala estacion anterior
 
                         try {
-
                             robot = true;
                             repaint();
                             System.out.println(getName() + " esta instalando la carroceria");
@@ -284,15 +269,9 @@ public class AssemblerView extends JFrame {
                             e.printStackTrace();
                         }
 
-                        robot = false;
-                        repaint();
-
-                 //       if (!stations[line][position + 1].estaVivo())
-                   //         new Thread(stations[line][position + 1]).start(); //arranca siguiente linea
 
                         stations[line][position + 1].canWork.Libera(); // la siguinte linea libera robot
 
-                        s3.Libera();
                         break;
 
                     case 3:
@@ -308,8 +287,11 @@ public class AssemblerView extends JFrame {
                         }
 
                         s4.Espera();
+                        stations[line][position-1].robot = false;
+                        stations[line][position-1].repaint();
+                        stations[line][position-1].canWork.Libera();
+                        s3.Libera();
 
-                        stations[line][position-1].canWork.Libera(); //puede entrar otro vehiculo ala estacion anterior
 
                         try {
                             robot = true;
@@ -320,15 +302,9 @@ public class AssemblerView extends JFrame {
                             e.printStackTrace();
                         }
 
-                        robot = false;
-                        repaint();
-
-                     //   if (!stations[line][position + 1].estaVivo())
-                       //     new Thread(stations[line][position + 1]).start(); //arranca siguiente linea
 
                         stations[line][position + 1].canWork.Libera(); // la siguinte linea libera robot
 
-                        s4.Libera();
                         break;
 
                     case 4:
@@ -344,8 +320,11 @@ public class AssemblerView extends JFrame {
                         }
 
                         s5.Espera();
+                        stations[line][position-1].robot = false;
+                        stations[line][position-1].repaint();
+                        stations[line][position-1].canWork.Libera();
+                        s4.Libera();
 
-                        stations[line][position-1].canWork.Libera(); //puede entrar otro vehiculo ala estacion anterior
 
                         try {
                             robot = true;
@@ -355,15 +334,9 @@ public class AssemblerView extends JFrame {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                            robot = false;
-                            repaint();
-                       // if (!stations[line][position + 1].estaVivo())
-                         //   new Thread(stations[line][position + 1]).start(); //arranca siguiente linea
-
 
                         stations[line][position + 1].canWork.Libera(); // la siguinte linea libera robot
 
-                        s5.Libera();
                         break;
 
                     case 5:
@@ -373,8 +346,10 @@ public class AssemblerView extends JFrame {
                             stop();
 
                         s6.Espera();
-
-                        stations[line][position-1].canWork.Libera(); //puede entrar otro vehiculo ala estacion anterior
+                        stations[line][position-1].robot = false;
+                        stations[line][position-1].repaint();
+                        stations[line][position-1].canWork.Libera();
+                        s5.Libera();
 
                         try {
                             robot = true;
@@ -406,96 +381,7 @@ public class AssemblerView extends JFrame {
             Thread t = new Thread(this);
             t.stop();
         }
-//    }
-//
-//            switch (position) {
-//                case 1:
-//                    try {
-//                        System.out.println("Trabajando en el chasis");
-//                        working = true;
-//                        repaint();
-//                        Thread.sleep(3200);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    working = false;
-//                    repaint();
-//                    break;
-//
-//                case 2:
-//                    try {
-//                        System.out.println("Trabajando en el motor");
-//                        working = true;
-//                        repaint();
-//                        Thread.sleep(3200);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    working = false;
-//                    repaint();
-//                    break;
-//
-//                case 3:
-//                    try {
-//                        System.out.println("Trabajando en el carroceria");
-//                        working = true;
-//                        repaint();
-//                        Thread.sleep(3200);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    working = false;
-//                    repaint();
-//                    break;
-//                case 4:
-//                    try {
-//                        System.out.println("Trabajando en las llantas");
-//                        working = true;
-//                        repaint();
-//                        Thread.sleep(3200);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    working = false;
-//                    repaint();
-//                    break;
-//                case 5:
-//                    s5.Espera();
-//                    s4.Libera();
-//                    try {
-//                        System.out.println("Trabajando en el interiores");
-//                        working = true;
-//                        repaint();
-//                        Thread.sleep(3200);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    working = false;
-//                    repaint();
-//                    break;
-//                case 6:
-//                    try {
-//                        System.out.println("Trabajando en las pruebas ");
-//                        working = true;
-//                        repaint();
-//                        Thread.sleep(3200);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    System.out.println("ia mevoi..");
-//                    working = false;
-//                    repaint();
-//                    break;
-//
-//            }
-//            repaint();
-//        }
+
     }
     }
 
