@@ -27,7 +27,7 @@ public class AssemblerView extends JFrame {
     }
 
     private void doInterface() {
-        setSize(1200, 1000);
+        setSize(1200, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -67,7 +67,7 @@ public class AssemblerView extends JFrame {
     }
 
     public void setData(int linequant) {
-        stations = new Stat[8][6];
+        stations = new Stat[5][6];
         for (int i = 0; i < stations.length; i++) {
             for (int k = 0; k < stations[0].length; k++)
                 stations[i][k] = new Stat(k, i);
@@ -83,7 +83,7 @@ public class AssemblerView extends JFrame {
         static int vehiculos;
         int waiting =  4000;
 
-        boolean apagada = true,robot,robot2 = false;
+        boolean apagada,robot,robot2 = false;
         Graphics g;
         Image buffer = null;
 
@@ -101,7 +101,6 @@ public class AssemblerView extends JFrame {
                 s5 = new Semaforo(2);
                 s6 = new Semaforo(5);
                 newCar = new Semaforo(1);
-                flag = new Semaforo(1);
                 vehiculos = 0;
             }
 
@@ -134,17 +133,13 @@ public class AssemblerView extends JFrame {
 
 
         public void Dibuja() {
-            if(!apagada)
             g.drawImage(Rutinas.AjustarImagen("encendida.png", getWidth(), getHeight()).getImage(), 0, 0, null);
 
-            else
-            g.drawImage(Rutinas.AjustarImagen("apagada.png", getWidth(), getHeight()).getImage(), 0, 0, null);
-
             if(robot)
-            g.drawImage(Rutinas.AjustarImagen("robot.png", 40, 40).getImage(), 100, 45, null);
+            g.drawImage(Rutinas.AjustarImagen("robot.png", 40, 40).getImage(), 100, 35, null);
 
             if(robot2)
-            g.drawImage(Rutinas.AjustarImagen("robot2.png", 40, 40).getImage(), 100, 65, null);
+            g.drawImage(Rutinas.AjustarImagen("robot2.png", 40, 40).getImage(), 100, 35, null);
 
         }
 
@@ -194,19 +189,27 @@ public class AssemblerView extends JFrame {
                         repaint();
 
 
-                        if (!stations[line][position + 1].estaVivo())
-                            new Thread(stations[line][position + 1]).start();//arranca siguiente linea
+                      /*  if (!stations[line][position + 1].estaVivo()) {
+                            System.out.println("Lo arranco..");
+                            (stations[line][position + 1]).run();//arranca siguiente linea
 
+                        }
+*/
+  //                      System.out.println("Prosigo..");
                         stations[line][position + 1].canWork.Libera(); // la siguinte linea libera robot
 
                         s1.Libera();
+
                         break;
+
 
                     case 1:
 
-
+                        System.out.println("INICIA ESTACION 2 ");
                         canWork.Espera();
+                        System.out.println("Entre");
                         if (apagada && !stations[line][position - 1].estaVivo()) { //checamos si aun se pueden hacer carros.
+                            System.out.println("PeEPE");
                             stations[line][position + 1].apagada = true;
                             repaint();
                             stations[line][position + 1].canWork.Libera();
@@ -216,12 +219,13 @@ public class AssemblerView extends JFrame {
                         }
 
                         s2.Espera();
-                        apagada = false;
+
                         stations[line][position - 1].canWork.Libera(); //puede entrar otro vehiculo ala estacion anterior
                         try {
+                            System.out.println("xxxxxxx");
                             robot = true;
                             repaint();
-                            System.out.println(getName() +" esta instalando el motor");
+                            System.out.println(getName() +" esta instalando el motor" + waiting);
                             Thread.sleep(waiting);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -237,6 +241,7 @@ public class AssemblerView extends JFrame {
                             System.out.println(getName()+" esta instalando la transmision");
                             robot2 = true;
                             repaint();
+
                             Thread.sleep(waiting);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -244,8 +249,8 @@ public class AssemblerView extends JFrame {
                         robot2 = false;
                         repaint();
 
-                        if (!stations[line][position + 1].estaVivo())
-                           new Thread(stations[line][position + 1]).start(); //arranca siguiente linea
+                      //  if (!stations[line][position + 1].estaVivo())
+                        //   new Thread(stations[line][position + 1]).start(); //arranca siguiente linea
 
                         stations[line][position + 1].canWork.Libera(); // la siguinte linea libera robot
 
@@ -282,8 +287,8 @@ public class AssemblerView extends JFrame {
                         robot = false;
                         repaint();
 
-                        if (!stations[line][position + 1].estaVivo())
-                            new Thread(stations[line][position + 1]).start(); //arranca siguiente linea
+                 //       if (!stations[line][position + 1].estaVivo())
+                   //         new Thread(stations[line][position + 1]).start(); //arranca siguiente linea
 
                         stations[line][position + 1].canWork.Libera(); // la siguinte linea libera robot
 
@@ -318,8 +323,8 @@ public class AssemblerView extends JFrame {
                         robot = false;
                         repaint();
 
-                        if (!stations[line][position + 1].estaVivo())
-                            new Thread(stations[line][position + 1]).start(); //arranca siguiente linea
+                     //   if (!stations[line][position + 1].estaVivo())
+                       //     new Thread(stations[line][position + 1]).start(); //arranca siguiente linea
 
                         stations[line][position + 1].canWork.Libera(); // la siguinte linea libera robot
 
@@ -352,8 +357,8 @@ public class AssemblerView extends JFrame {
                         }
                             robot = false;
                             repaint();
-                        if (!stations[line][position + 1].estaVivo())
-                            new Thread(stations[line][position + 1]).start(); //arranca siguiente linea
+                       // if (!stations[line][position + 1].estaVivo())
+                         //   new Thread(stations[line][position + 1]).start(); //arranca siguiente linea
 
 
                         stations[line][position + 1].canWork.Libera(); // la siguinte linea libera robot
