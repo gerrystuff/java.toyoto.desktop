@@ -135,15 +135,18 @@ public class AssemblerView extends JFrame {
 
 
         public void Dibuja() {
+            if(position == 1)
+                g.drawImage(Rutinas.AjustarImagen("motor-transmision.png", getWidth(), getHeight()).getImage(), 0, 0, null);
+            else
             g.drawImage(Rutinas.AjustarImagen("encendida.png", getWidth(), getHeight()).getImage(), 0, 0, null);
 
             g.drawString(veh,50,10);
 
             if(robot)
-            g.drawImage(Rutinas.AjustarImagen("robot.png", 40, 40).getImage(), 100, 35, null);
+            g.drawImage(Rutinas.AjustarImagen("robot.png", 40, 40).getImage(), 50, 35, null);
 
             if(robot2)
-            g.drawImage(Rutinas.AjustarImagen("robot2.png", 40, 40).getImage(), 100, 35, null);
+            g.drawImage(Rutinas.AjustarImagen("robot2.png", 40, 40).getImage(), 120, 35, null);
 
 
         }
@@ -154,209 +157,124 @@ public class AssemblerView extends JFrame {
             while (true) {
                 switch (position) {
                     case 0:
-
                         canWork.Espera(); //Semaforo personal que indica si la estacion puede trabajar. chasis empieza en verde.
-
                         robot = false;
                         repaint();
-
                         s1.Espera();
-                        newCar.Espera(); //Semaforo global que indica si se puede ensamblar un carro nuevo
-
-                        if (vehiculos == 20) {
-                            System.out.println("ENTRE A ESTA MIERDA");
-                            apagada = true;
-                            repaint();
-                            canWork.Libera();
-
-                            newCar.Libera();
-                            s1.Libera();
-                            new Thread(stations[line][0]).stop();
-                        }
-
-                        vehiculos++;
-                        label.setText(String.valueOf(vehiculos));
-                        System.out.println(getName() + " fabricando vehiculo #" + vehiculos);
-                        veh = String.valueOf(vehiculos);
-                        repaint();
-                        newCar.Libera();
-
                         try {
                             robot = true;
                             repaint();
-                            System.out.println(getName() + " esta instalando el chasis");
-                            Thread.sleep(waiting);
+                            Thread.sleep(4000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
 
-                        stations[line][position + 1].canWork.Libera(); // la siguinte linea libera robot
+                        robot = false;
+                        repaint();
+                        s1.Libera();
+                        stations[line][position + 1].canWork.Libera();
 
                         break;
-
-
                     case 1:
-
                         canWork.Espera();
-
-                        if (apagada && !stations[line][position - 1].estaVivo()) { //checamos si aun se pueden hacer carros.
-
-                            stations[line][position + 1].apagada = true;
-                            repaint();
-                            stations[line][position + 1].canWork.Libera();
-
-                            stop();
-
-                        }
-
 
                         s2.Espera();
 
                         stations[line][position-1].canWork.Libera();
 
-                        s1.Libera();
 
                         try {
                             robot = true;
                             repaint();
-                            System.out.println(getName() +" esta instalando el motor");
-                            Thread.sleep(waiting);
+                            Thread.sleep(1800);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        s2t.Espera();
+                        robot2 = true;
+                        robot = false;
+                        repaint();
 
-                        s2t.Espera(); //incia la instalacion de la transmision
-
-                        s2.Libera(); //liberamos la instalacion del motor
+                        s2.Libera();
 
                         try {
-                            System.out.println(getName()+" esta instalando la transmision");
-                            robot2 = true;
-                            repaint();
-                            Thread.sleep(waiting);
+                            Thread.sleep(1300);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
 
                         robot2 = false;
                         repaint();
-
-                        stations[line][position + 1].canWork.Libera(); // la siguinte linea libera robot
-
                         s2t.Libera();
+                        stations[line][position + 1].canWork.Libera();
                         break;
 
                     case 2:
                         canWork.Espera();
 
-                        if (apagada && !stations[line][position-1].estaVivo()) { //checamos si aun se pueden hacer carros.
-                            stations[line][position + 1].apagada = true;
-                            repaint();
-                            stations[line][position + 1].canWork.Libera();
-
-                            stop();
-
-                        }
-
                         s3.Espera();
+                        stations[line][position-1].canWork.Libera();
 
                         try {
                             robot = true;
                             repaint();
-                            System.out.println(getName() + " esta instalando la carroceria");
-                            Thread.sleep(waiting);
+                            Thread.sleep(2000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
 
-
-                        stations[line][position + 1].canWork.Libera(); // la siguinte linea libera robot
-
+                        robot = false;
+                        repaint();
+                        s3.Libera();
+                        stations[line][position + 1].canWork.Libera();
                         break;
 
                     case 3:
                         canWork.Espera();
-
-                        if (apagada && !stations[line][position-1].estaVivo()) { //checamos si aun se pueden hacer carros.
-                            stations[line][position + 1].apagada = true;
-                            repaint();
-                            stations[line][position + 1].canWork.Libera();
-
-                            stop();
-
-                        }
-
                         s4.Espera();
-                        stations[line][position-1].robot = false;
-                        stations[line][position-1].repaint();
                         stations[line][position-1].canWork.Libera();
-                        s3.Libera();
-
 
                         try {
                             robot = true;
                             repaint();
-                            System.out.println(getName() +" esta instalando los interiores");
-                            Thread.sleep(waiting);
+                            Thread.sleep(1500);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
 
-
-                        stations[line][position + 1].canWork.Libera(); // la siguinte linea libera robot
-
+                        robot = false;
+                        repaint();
+                        s4.Libera();
+                        stations[line][position + 1].canWork.Libera();
                         break;
 
                     case 4:
                         canWork.Espera();
-
-                        if (apagada && !stations[line][position-1].estaVivo()) { //checamos si aun se pueden hacer carros.
-                            stations[line][position + 1].apagada = true;
-                            repaint();
-                            stations[line][position + 1].canWork.Libera();
-
-                            stop();
-
-                        }
-
                         s5.Espera();
-                        stations[line][position-1].robot = false;
-                        stations[line][position-1].repaint();
                         stations[line][position-1].canWork.Libera();
-                        s4.Libera();
-
 
                         try {
                             robot = true;
                             repaint();
-                            System.out.println(getName() +" esta instalando la carroceria");
-                            Thread.sleep(waiting);
+                            Thread.sleep(1500);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
 
-                        stations[line][position + 1].canWork.Libera(); // la siguinte linea libera robot
-
+                        robot = false;
+                        repaint();
+                        s5.Libera();
+                        stations[line][position + 1].canWork.Libera();
                         break;
 
                     case 5:
                         canWork.Espera();
-
-                        if (apagada && !stations[line][position-1].estaVivo())  //checamos si aun se pueden hacer carros.
-                            stop();
-
                         s6.Espera();
-                        stations[line][position-1].robot = false;
-                        stations[line][position-1].repaint();
                         stations[line][position-1].canWork.Libera();
-                        s5.Libera();
-
                         try {
                             robot = true;
                             repaint();
-
-                            System.out.println(getName()+ " esta haciendo las pruebas");
-                            Thread.sleep(waiting);
+                            Thread.sleep(2000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -364,6 +282,7 @@ public class AssemblerView extends JFrame {
                         robot = false;
                         repaint();
                         s6.Libera();
+                        canWork.Libera();
                         break;
 
                 }
