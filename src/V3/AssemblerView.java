@@ -21,8 +21,9 @@ public class AssemblerView extends JFrame {
     private AssemblerModel model;
     private AssemblerController controller;
     public static Stat stations[][];
-    private JPanel centro;
-    static JLabel label;
+    private JPanel center,header;
+    static JLabel contadorAutos,chasis;
+    static JTextField jt;
 
     public AssemblerView() {
         setTitle("Ensambladora de automoviles TOYOTO");
@@ -34,28 +35,44 @@ public class AssemblerView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        centro = new JPanel();
-        centro.setLayout(new GridLayout(0, 6));
+        center = new JPanel();
+        center.setLayout(new GridLayout(0, 6));
 
         model = new AssemblerModel();
         controller = new AssemblerController(this, model);
 
-        JButton btn = new JButton("GO");
+        JButton btn = new JButton();
+        btn.setFont(new Font("Tahoma",1,26));
+        btn.setText("EMPEZAR PRODUCCION");
         btn.addActionListener(e -> go());
 
-        label = new JLabel("0");
-
-        add(label,BorderLayout.SOUTH);
+        btn.setPreferredSize(new Dimension(550,100));
 
 
-        add(btn, BorderLayout.NORTH);
+        contadorAutos = new JLabel();
+        header = new JPanel();
+
+        header.add(btn);
+
+
+        contadorAutos.setBackground(WHITE);
+        contadorAutos.setPreferredSize(new Dimension(getWidth()/2,100));
+        contadorAutos.setFont(new Font("Tahoma",1,26));
+
+        contadorAutos.setVerticalAlignment(SwingConstants.CENTER);
+        contadorAutos.setText("        VEHICULOS TERMINADOS : ");
+        header.add(contadorAutos);
+
+        add(header, BorderLayout.NORTH);
+
+
 
         for (int i = 0; i < stations.length; i++) {
             for (int k = 0; k < stations[0].length; k++)
-                centro.add(stations[i][k]);
+                center.add(stations[i][k]);
         }
 
-        add(centro);
+        add(center);
 
         setVisible(true);
 
@@ -70,7 +87,7 @@ public class AssemblerView extends JFrame {
     }
 
     public void setData(int linequant) {
-        stations = new Stat[10][6];
+        stations = new Stat[10 ][6];
         for (int i = 0; i < stations.length; i++) {
             for (int k = 0; k < stations[0].length; k++)
                 stations[i][k] = new Stat(k, i);
@@ -81,11 +98,11 @@ public class AssemblerView extends JFrame {
 
     static class Stat extends StationController implements Runnable {
 
-        public static Semaforo s0, s1, s1t, s2, s3, s4, s5, newCar, flag0,flag1,flag2,flag3,flag4,flag5;
+        public static Semaforo s0, s1, s1t, s2, s3, s4, s5, newCar, flag0,flag1;
         public Semaforo canWork;
-        static int vehiculos;
-        int vh ,vh2,cant;
-        int waiting =  4000;
+        static int vehiculosEnProceso,vehiculosTerminados;
+        String veh = "";
+        int vh ,vh2;
 
         boolean stopWorking,robot,robot2 = false;
         Graphics g;
@@ -107,8 +124,9 @@ public class AssemblerView extends JFrame {
                 newCar = new Semaforo(1);
 
                 flag0 = new Semaforo(1);
+                flag1 = new Semaforo(1);
 
-                vehiculos = 0;
+                vehiculosEnProceso = 0;
             }
 
             if (position == 0)
@@ -133,7 +151,6 @@ public class AssemblerView extends JFrame {
 
         }
 
-        String veh = "",veh2 = "";
 
         @Override
         public void update(Graphics g) {
@@ -175,14 +192,15 @@ public class AssemblerView extends JFrame {
                         canWork.Espera(); //Semaforo personal que indica si la estacion puede trabajar. chasis empieza en verde.
 
                         flag0.Espera();
-                        vehiculos++;
+                        vehiculosEnProceso++;
 
-                        if(vehiculos >= 20){
+                        if(vehiculosEnProceso > 20){
                             System.out.println("ESTACION MUERTA.");
+                            flag0.Libera();
                             break;
                         }
 
-                        vh = vehiculos;
+                        vh = vehiculosEnProceso;
 
                         flag0.Libera();
 
@@ -206,11 +224,6 @@ public class AssemblerView extends JFrame {
                     case 1:
                         canWork.Espera();
 
-                        if(stopWorking){
-                            System.out.println("ESTACION MUERTA.");
-
-                            break;
-                        }
                         s1.Espera();
 
 
@@ -252,10 +265,7 @@ public class AssemblerView extends JFrame {
 
                     case 2:
                         canWork.Espera();
-                        if(stopWorking){
-                            System.out.println("ESTACION MUERTA.");
-                            break;
-                        }
+
                         s2.Espera();
 
                         stations[line][1].robot2 = false;
@@ -276,10 +286,7 @@ public class AssemblerView extends JFrame {
 
                     case 3:
                         canWork.Espera();
-                        if(stopWorking){
-                            System.out.println("ESTACION MUERTA.");
-                            break;
-                        }
+
                         s3.Espera();
 
                         stations[line][2].robot = false;
@@ -294,17 +301,14 @@ public class AssemblerView extends JFrame {
                             Thread.sleep(2000);
                         } catch (InterruptedException e) { }
 
+
                         stations[line][4].vh = vh;
                         stations[line][4].canWork.Libera();
                         break;
 
                     case 4:
                         canWork.Espera();
-                        if(stopWorking){
-                            System.out.println("ESTACION MUERTA.");
 
-                            break;
-                        }
                         s4.Espera();
 
                         stations[line][3].robot = false;
@@ -319,16 +323,14 @@ public class AssemblerView extends JFrame {
                             Thread.sleep(1500);
                         } catch (InterruptedException e) { }
 
+
                         stations[line][5].vh = vh;
                         stations[line][5].canWork.Libera();
                         break;
 
                     case 5:
                         canWork.Espera();
-                        if(stopWorking){
-                            System.out.println("ESTACION MUERTA.");
-                            break;
-                        }
+
                         s5.Espera();
 
                         stations[line][4].robot = false;
@@ -346,6 +348,14 @@ public class AssemblerView extends JFrame {
                         robot = false;
                         repaint();
 
+                        flag1.Espera();
+                        vehiculosTerminados++;
+                        System.out.println(vehiculosTerminados);
+
+                        contadorAutos.setText("        VEHICULOS TERMINADOS : " + vehiculosTerminados);
+
+
+                        flag1.Libera();
                         s5.Libera();
                         break;
 
