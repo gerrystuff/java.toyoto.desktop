@@ -8,7 +8,9 @@ import V3.model.Semaforo;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Optional;
+
+import static java.awt.Color.BLUE;
+import static java.awt.Color.WHITE;
 
 public class AssemblerView extends JFrame {
 
@@ -79,29 +81,33 @@ public class AssemblerView extends JFrame {
 
     static class Stat extends StationController implements Runnable {
 
-        public static Semaforo s1, s2, s2t, s3, s4, s5, s6, newCar,flag;
+        public static Semaforo s0, s1, s1t, s2, s3, s4, s5, newCar, flag0,flag1,flag2,flag3,flag4,flag5;
         public Semaforo canWork;
         static int vehiculos;
+        int vh ,vh2,cant;
         int waiting =  4000;
 
-        boolean apagada,robot,robot2 = false;
+        boolean stopWorking,robot,robot2 = false;
         Graphics g;
         Image buffer = null;
 
 
         public Stat(int pos, int line) {
             super(pos, line);
-            if (s1 == null) {
+            if (s0 == null) {
 
 
-                s1 = new Semaforo(5);
-                s2 = new Semaforo(4);
-                s2t = new Semaforo(2);
+                s0 = new Semaforo(5);
+                s1 = new Semaforo(4);
+                s1t = new Semaforo(2);
+                s2 = new Semaforo(3);
                 s3 = new Semaforo(3);
-                s4 = new Semaforo(3);
-                s5 = new Semaforo(2);
-                s6 = new Semaforo(5);
+                s4 = new Semaforo(2);
+                s5 = new Semaforo(5);
                 newCar = new Semaforo(1);
+
+                flag0 = new Semaforo(1);
+
                 vehiculos = 0;
             }
 
@@ -127,7 +133,7 @@ public class AssemblerView extends JFrame {
 
         }
 
-        String veh = "";
+        String veh = "",veh2 = "";
 
         @Override
         public void update(Graphics g) {
@@ -136,20 +142,28 @@ public class AssemblerView extends JFrame {
 
 
         public void Dibuja() {
-            if(position == 1)
+            if (stopWorking) {
+                g.drawImage(Rutinas.AjustarImagen("apagada.png", getWidth(), getHeight()).getImage(), 0, 0, null);
+                return;
+            }
+            if (position == 1)
                 g.drawImage(Rutinas.AjustarImagen("motor-transmision.png", getWidth(), getHeight()).getImage(), 0, 0, null);
             else
-            g.drawImage(Rutinas.AjustarImagen("encendida.png", getWidth(), getHeight()).getImage(), 0, 0, null);
+                g.drawImage(Rutinas.AjustarImagen("encendida.png", getWidth(), getHeight()).getImage(), 0, 0, null);
 
-            g.drawString(veh,50,10);
+            g.setFont(new Font("Tahoma", 3, 12));
 
-            if(robot)
-            g.drawImage(Rutinas.AjustarImagen("robot.png", 40, 40).getImage(), 50, 35, null);
+            if (robot) {
+                g.drawImage(Rutinas.AjustarImagen("robot.png", 40, 40).getImage(), 50, 35, null);
+                g.setColor(BLUE);
+                g.drawString(veh, 10, 20);
+            }
+            if (robot2) {
+                g.drawImage(Rutinas.AjustarImagen("robot2.png", 40, 40).getImage(), 120, 35, null);
+                g.setColor(WHITE);
+                g.drawString(veh, 115, 20);
 
-            if(robot2)
-            g.drawImage(Rutinas.AjustarImagen("robot2.png", 40, 40).getImage(), 120, 35, null);
-
-
+            }
         }
 
         @Override
@@ -159,135 +173,180 @@ public class AssemblerView extends JFrame {
                 switch (position) {
                     case 0:
                         canWork.Espera(); //Semaforo personal que indica si la estacion puede trabajar. chasis empieza en verde.
-                        robot = false;
-                        repaint();
-                        s1.Espera();
-                        try {
-                            robot = true;
-                            repaint();
-                            Thread.sleep(4000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+
+                        flag0.Espera();
+                        vehiculos++;
+
+                        if(vehiculos >= 20){
+                            System.out.println("ESTACION MUERTA.");
+                            break;
                         }
+
+                        vh = vehiculos;
+
+                        flag0.Libera();
+
 
                         robot = false;
                         repaint();
-                                //1 int lineActual
+
+                        s0.Espera();
+
+                        try {
+                            veh ="Vehiculo: " + vh;
+                            robot = true;
+                            repaint();
+                            Thread.sleep(4000);
+                        } catch (InterruptedException e) { }
+
+                        stations[line][1].vh = vh;
                         stations[line][1].canWork.Libera();
 
                         break;
                     case 1:
                         canWork.Espera();
 
-                        s2.Espera();
-                        s1.Libera();
+                        if(stopWorking){
+                            System.out.println("ESTACION MUERTA.");
 
-                                //1
-                        stations[line][0].canWork.Libera();
+                            break;
+                        }
+                        s1.Espera();
+
+
                         stations[line][0].robot = false;
                         stations[line][0].repaint();
+                        stations[line][0].canWork.Libera();
+
+                        s0.Libera();
 
 
                         try {
+                            veh = "Vehiculo: "+vh;
                             robot = true;
                             repaint();
-                            Thread.sleep(4000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        s2t.Espera();
+                            Thread.sleep(1800);
+                        } catch (InterruptedException e) { }
+
+                        vh2 = vh;
+                        s1t.Espera();
+
+                        veh = "Vehiculo: " +vh2;
                         robot2 = true;
                         robot = false;
                         repaint();
 
-                        s2.Libera();
+                        s1.Libera();
 
                         try {
-                            Thread.sleep(4000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
 
-                        robot2 = false;
-                        repaint();
-                        s2t.Libera();
-                        stations[line][position + 1].canWork.Libera();
+                            Thread.sleep(1400);
+                        } catch (InterruptedException e) { }
+
+
+
+                        stations[line][2].vh = vh2;
+                        stations[line][2].canWork.Libera();
+
                         break;
 
                     case 2:
                         canWork.Espera();
+                        if(stopWorking){
+                            System.out.println("ESTACION MUERTA.");
+                            break;
+                        }
+                        s2.Espera();
 
-                        s3.Espera();
-                        stations[line][position-1].canWork.Libera();
+                        stations[line][1].robot2 = false;
+                        stations[line][1].repaint();
 
+                        s1t.Libera();
+;
                         try {
+                            veh = "Vehiculo: "+vh;
                             robot = true;
                             repaint();
                             Thread.sleep(2000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        } catch (InterruptedException e) { }
 
-                        robot = false;
-                        repaint();
-                        s3.Libera();
-                        stations[line][position + 1].canWork.Libera();
+                        stations[line][3].vh = vh;
+                        stations[line][3].canWork.Libera();
                         break;
 
                     case 3:
                         canWork.Espera();
-                        s4.Espera();
-                        stations[line][position-1].canWork.Libera();
+                        if(stopWorking){
+                            System.out.println("ESTACION MUERTA.");
+                            break;
+                        }
+                        s3.Espera();
+
+                        stations[line][2].robot = false;
+                        stations[line][2].repaint();
+
+                        s2.Libera();
 
                         try {
+                            veh = "Vehiculo: "+vh;
                             robot = true;
                             repaint();
-                            Thread.sleep(1500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) { }
 
-                        robot = false;
-                        repaint();
-                        s4.Libera();
-                        stations[line][position + 1].canWork.Libera();
+                        stations[line][4].vh = vh;
+                        stations[line][4].canWork.Libera();
                         break;
 
                     case 4:
                         canWork.Espera();
-                        s5.Espera();
-                        stations[line][position-1].canWork.Libera();
+                        if(stopWorking){
+                            System.out.println("ESTACION MUERTA.");
+
+                            break;
+                        }
+                        s4.Espera();
+
+                        stations[line][3].robot = false;
+                        stations[line][3].repaint();
+
+                        s3.Libera();
 
                         try {
+                            veh = "Vehiculo: "+vh;
                             robot = true;
                             repaint();
                             Thread.sleep(1500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        } catch (InterruptedException e) { }
 
-                        robot = false;
-                        repaint();
-                        s5.Libera();
-                        stations[line][position + 1].canWork.Libera();
+                        stations[line][5].vh = vh;
+                        stations[line][5].canWork.Libera();
                         break;
 
                     case 5:
                         canWork.Espera();
-                        s6.Espera();
-                        stations[line][position-1].canWork.Libera();
+                        if(stopWorking){
+                            System.out.println("ESTACION MUERTA.");
+                            break;
+                        }
+                        s5.Espera();
+
+                        stations[line][4].robot = false;
+                        stations[line][4].repaint();
+
+                        s4.Libera();
+
                         try {
+                            veh = "Vehiculo: "+vh;
                             robot = true;
                             repaint();
-                            Thread.sleep(2000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                            Thread.sleep(4000);
+                        } catch (InterruptedException e) { }
 
                         robot = false;
                         repaint();
-                        s6.Libera();
-                        canWork.Libera();
+
+                        s5.Libera();
                         break;
 
                 }
