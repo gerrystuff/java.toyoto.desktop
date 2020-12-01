@@ -8,6 +8,7 @@ import V3.model.Semaforo;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Optional;
 
 public class AssemblerView extends JFrame {
 
@@ -171,22 +172,26 @@ public class AssemblerView extends JFrame {
 
                         robot = false;
                         repaint();
-                        s1.Libera();
-                        stations[line][position + 1].canWork.Libera();
+                                //1 int lineActual
+                        stations[line][1].canWork.Libera();
 
                         break;
                     case 1:
                         canWork.Espera();
 
                         s2.Espera();
+                        s1.Libera();
 
-                        stations[line][position-1].canWork.Libera();
+                                //1
+                        stations[line][0].canWork.Libera();
+                        stations[line][0].robot = false;
+                        stations[line][0].repaint();
 
 
                         try {
                             robot = true;
                             repaint();
-                            Thread.sleep(1800);
+                            Thread.sleep(4000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -198,7 +203,7 @@ public class AssemblerView extends JFrame {
                         s2.Libera();
 
                         try {
-                            Thread.sleep(1300);
+                            Thread.sleep(4000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
