@@ -31,7 +31,7 @@ public class StationTests extends StationController implements Runnable{
 
             s5.Espera();
 
-            AssemblerView.stations[line][previusStation].robotOn2 = false;
+            AssemblerView.stations[line][previusStation].robotOn = false;
             AssemblerView.stations[line][previusStation].repaint();
 
             s4.Libera();
@@ -45,7 +45,12 @@ public class StationTests extends StationController implements Runnable{
 
             robotOn = false;
             repaint();
+
             flag1.Espera();
+            AssemblerView.setCompleteCar();
+            flag1.Libera();
+
+            s5.Libera();
 
     }
     }

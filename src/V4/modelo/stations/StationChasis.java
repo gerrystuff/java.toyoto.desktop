@@ -34,7 +34,7 @@ public class StationChasis extends StationController implements Runnable {
 
            flag0.Espera();
 
-           workingOn = AssemblerView.getCars();
+           workingOn = AssemblerView.getNewcar();
 
            if (workingOn == -1)
            {

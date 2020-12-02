@@ -8,20 +8,21 @@ import java.awt.*;
 
 public class AssemblerView extends JFrame {
 
+
     public static void main(String[] args) {
         new AssemblerView();
     }
     static final int TOTALCARS = 20;
-    static int cars;
+    static int newcars,completecars = 0;
 
     public static StationController stations[][];
     private JPanel center,header;
-    static JLabel contadorAutos,chasis;
+    static JLabel contadorAutos;
     static JTextField jt;
 
     public AssemblerView() {
         setTitle("Ensambladora de automoviles TOYOTO");
-        cars = TOTALCARS;
+        newcars = TOTALCARS;
         doInterface();
     }
 
@@ -55,6 +56,13 @@ public class AssemblerView extends JFrame {
         contadorAutos.setText("        VEHICULOS TERMINADOS : ");
         header.add(contadorAutos);
 
+        contadorAutos.setBackground(Color.WHITE);
+        contadorAutos.setPreferredSize(new Dimension(getWidth()/2,100));
+        contadorAutos.setFont(new Font("Tahoma",1,26));
+
+        contadorAutos.setVerticalAlignment(SwingConstants.CENTER);
+        contadorAutos.setText("        VEHICULOS TERMINADOS : ");
+        header.add(contadorAutos);
         add(header, BorderLayout.NORTH);
 
 
@@ -73,13 +81,22 @@ public class AssemblerView extends JFrame {
 
     }
 
-    public static int getCars(){
-        if(cars > 0) {
-            cars--;
-            return TOTALCARS - cars;
+    public static int getNewcar(){
+        if(newcars > 0) {
+            newcars--;
+            return TOTALCARS - newcars;
         }
         else
             return -1;
+    }
+
+    public static void setCompleteCar(){
+        completecars++;
+        contadorAutos.setText("        VEHICULOS TERMINADOS : " + completecars);
+    }
+
+    public static int getCarsComplete(){
+        return newcars;
     }
 
 

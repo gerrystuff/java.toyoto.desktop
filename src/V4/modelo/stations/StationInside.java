@@ -31,7 +31,7 @@ public class StationInside extends StationController implements Runnable{
 
             s3.Espera();
 
-            AssemblerView.stations[line][previusStation].robotOn2 = false;
+            AssemblerView.stations[line][previusStation].robotOn = false;
             AssemblerView.stations[line][previusStation].repaint();
 
             s2.Libera();

@@ -31,7 +31,7 @@ public class StationTires extends StationController implements Runnable {
 
             s4.Espera();
 
-            AssemblerView.stations[line][previusStation].robotOn2 = false;
+            AssemblerView.stations[line][previusStation].robotOn = false;
             AssemblerView.stations[line][previusStation].repaint();
 
             s3.Libera();
